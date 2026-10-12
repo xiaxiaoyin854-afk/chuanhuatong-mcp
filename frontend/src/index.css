@@ -1,4 +1,4 @@
-/* ── Tokens ──────────────────────────────────────────────── */
+/* ── Tokens ── */
 :root {
   --bg:          #F7F4EF;
   --surface:     #FFFFFF;
@@ -22,7 +22,6 @@
   --nav-h:       76px;
   --safe-top:    env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
-  /* blur-surface: navbar / sheet / input bar backgrounds */
   --blur-surface:     rgba(247,244,239,.88);
   --blur-surface-dim: rgba(247,244,239,.72);
   --nav-surface:      rgba(255,253,249,.80);
@@ -52,7 +51,6 @@
   --nav-surface:      rgba(28,22,16,.82);
 }
 
-/* ── Reset ───────────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
@@ -61,8 +59,7 @@
 
 html, body, #root {
   height: 100%; width: 100%; margin: 0; padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
-               "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
   background: var(--bg);
   color: var(--text);
   font-size: 16px;
@@ -73,46 +70,41 @@ html, body, #root {
 button, input, textarea { font-family: inherit; }
 input, textarea { -webkit-appearance: none; }
 
-/* ── Scrollbars ──────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 0; height: 0; }
 * { scrollbar-width: none; }
 
-/* ── Animations ──────────────────────────────────────────── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0);   }
+  to   { opacity: 1; transform: translateY(0); }
 }
-@keyframes slideUp   { from { transform: translateY(100%); } to { transform: translateY(0); } }
-@keyframes slideInR  { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes slideUp  { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes slideInR { from { transform: translateX(100%); } to { transform: translateX(0); } }
 
 .anim-fade-up  { animation: fadeUp  .18s ease-out both; }
 .anim-slide-up { animation: slideUp .26s ease-out; }
 .anim-slide-r  { animation: slideInR .22s ease-out; }
 
-/* ── Tap feedback ────────────────────────────────────────── */
 .tap { cursor: pointer; -webkit-user-select: none; user-select: none; }
 .tap:active { opacity: .5; }
 
-/* ── Hairline separator ──────────────────────────────────── */
 .sep { height: .5px; background: var(--sep); }
 .sep-l { height: .5px; background: var(--sep); margin-left: 16px; }
 
-/* ── Group chat: snowy login page ────────────────────────── */
-@keyframes gcSnow { from { transform: translateY(-50%); } to { transform: translateY(0); } }
-@keyframes gcFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+/* ── Group chat: snowy glass login ── */
+@keyframes gcSnow  { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+@keyframes gcFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
-main.auth-page {
+.auth-page {
   position: relative;
   overflow: hidden;
-  min-height: 100dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  min-height: 100%;
+  display: grid;
+  place-items: center;
   padding: 24px 20px calc(24px + var(--safe-bottom));
-  background: linear-gradient(180deg, #DCE7F3 0%, #EEF2F7 45%, #F8F1EE 100%);
+  background: linear-gradient(180deg, #D6E3F2 0%, #EDF1F7 48%, #F9EEF0 100%);
 }
-main.auth-page::before,
-main.auth-page::after {
+.auth-page::before,
+.auth-page::after {
   content: "";
   position: absolute;
   left: 0; right: 0; top: 0;
@@ -125,105 +117,57 @@ main.auth-page::after {
     radial-gradient(2.5px 2.5px at 110px 14px, #fff 60%, transparent 62%);
   background-size: 130px 140px;
   animation: gcSnow 16s linear infinite;
-  filter: drop-shadow(0 0 1px rgba(140,160,190,.5));
+  filter: drop-shadow(0 0 1px rgba(140,160,190,.6));
 }
-main.auth-page::after {
+.auth-page::after {
   background-size: 190px 210px;
   animation-duration: 26s;
   opacity: .7;
 }
-main.auth-page .auth-card {
+.auth-page > div {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 380px;
-  padding: 30px 24px 24px;
+  max-width: 380px !important;
+  padding: 30px 22px 24px !important;
   text-align: center;
-  background: rgba(255,255,255,.66);
-  -webkit-backdrop-filter: blur(20px) saturate(1.2);
-  backdrop-filter: blur(20px) saturate(1.2);
-  border: 1px solid rgba(255,255,255,.8);
-  border-radius: 28px;
-  box-shadow: 0 18px 50px rgba(110,125,160,.18);
+  background: linear-gradient(160deg, rgba(255,255,255,.72), rgba(255,255,255,.42)) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(1.6);
+  backdrop-filter: blur(22px) saturate(1.6);
+  border: 1px solid rgba(255,255,255,.9) !important;
+  border-radius: 30px !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgba(255,255,255,.35),
+    0 20px 50px rgba(110,125,160,.22) !important;
 }
-main.auth-page .auth-logo {
+.auth-page form { text-align: left; }
+.auth-logo {
   display: block;
   width: 84px; height: 84px;
   margin: 0 auto 14px;
   border-radius: 22px;
-  box-shadow: 0 8px 22px rgba(110,125,160,.25);
+  box-shadow: 0 10px 24px rgba(110,125,160,.28);
   animation: gcFloat 4s ease-in-out infinite;
 }
-main.auth-page h1 {
-  margin: 0;
+.auth-title {
   font-size: 32px;
-  font-weight: 400;
-  letter-spacing: .5px;
   color: #3B3550;
+  letter-spacing: .5px;
 }
-main.auth-page .auth-subtitle {
+.auth-subtitle {
   margin: 6px 0 20px;
   font-size: 13px;
   color: #8E8AA3;
 }
-main.auth-page .auth-tabs {
-  display: flex;
-  gap: 4px;
-  padding: 4px;
-  margin-bottom: 18px;
-  border-radius: 999px;
-  background: rgba(220,228,240,.6);
-}
-main.auth-page .auth-tabs button {
-  flex: 1;
-  border: 0;
-  padding: 8px 0;
-  border-radius: 999px;
-  background: transparent;
-  color: #8E8AA3;
-  font-size: 14px;
-}
-main.auth-page .auth-tabs button.active {
-  background: #fff;
-  color: #3B3550;
-  font-weight: 600;
+.auth-page [role="tab"][aria-selected="true"] {
+  background: rgba(255,255,255,.95) !important;
+  color: #C9708A !important;
   box-shadow: 0 2px 8px rgba(110,125,160,.15);
 }
-main.auth-page .form-group {
-  text-align: left;
-  margin-bottom: 12px;
+.auth-page button[type="submit"]:not(:disabled) {
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, #F4BCC8, #E58FA3) !important;
+  box-shadow: 0 8px 20px rgba(229,143,163,.35), inset 0 1px 0 rgba(255,255,255,.5);
 }
-main.auth-page .form-group label {
-  display: block;
-  margin: 0 0 6px 6px;
-  font-size: 13px;
-  color: #6E6A85;
-}
-main.auth-page .form-group input {
-  width: 100%;
-  padding: 12px 16px;
-  border: 1px solid rgba(160,170,200,.25);
-  border-radius: 16px;
-  background: rgba(255,255,255,.85);
-  color: #3B3550;
-  font-size: 16px;
-  outline: none;
-}
-main.auth-page .form-group input:focus {
-  border-color: #E8A6B4;
-  box-shadow: 0 0 0 3px rgba(232,166,180,.2);
-}
-main.auth-page .btn-primary {
-  width: 100%;
-  margin-top: 8px;
-  padding: 14px 0;
-  border: 0;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #F2B6C1, #E58FA3);
-  color: #fff;
-  font-size: 16px;
-  font-weight: 600;
-  box-shadow: 0 8px 20px rgba(229,143,163,.35);
-}
-main.auth-page .btn-primary:disabled { opacity: .6; }
-main.auth-page .form-help { font-size: 12px; color: #9A96AE; margin: 6px 0 0 6px; }
+.auth-page button[type="submit"] { border-radius: 999px !important; }
