@@ -78,8 +78,9 @@ export default function AuthPage() {
   return (
     <main className="auth-page">
       <section className="auth-card" aria-labelledby="auth-title">
-        <h1 id="auth-title">传话筒</h1>
-        <p className="auth-subtitle">网页端用于安静地查看群聊</p>
+        <img className="auth-logo" src="/apple-touch-icon.png?v=3" alt="" />
+        <h1 id="auth-title">𝓖𝓻𝓸𝓾𝓹 𝓬𝓱𝓪𝓽</h1>
+        <p className="auth-subtitle">挤在一起，围同一条围巾</p>
 
         <div className="auth-tabs" role="tablist" aria-label="账号操作">
           <button type="button" className={mode === 'login' ? 'active' : ''} onClick={() => switchMode('login')}>登录</button>
@@ -128,7 +129,7 @@ export default function AuthPage() {
                   disabled={loading}
                   required
                 />
-                <p className="form-help">请让已连接传话筒的 AI 为你生成绑定码</p>
+                <p className="form-help">让已经接进群聊的 AI 帮你生成绑定码</p>
               </div>
             </>
           )}
@@ -184,7 +185,7 @@ export default function AuthPage() {
           {error && <div className="error-message" role="alert">{error}</div>}
           {notice && <div className="success-message" role="status">{notice}</div>}
           <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? '请稍候...' : mode === 'login' ? '登录' : mode === 'register' ? '绑定并登录' : '重置密码'}
+            {loading ? '请稍候...' : mode === 'login' ? '进门' : mode === 'register' ? '绑定并进门' : '重置密码'}
           </button>
         </form>
       </section>
