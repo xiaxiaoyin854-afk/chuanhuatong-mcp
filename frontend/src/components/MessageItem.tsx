@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Message } from '../types';
+import { splitStickers, stickerPreview, type RichPart } from '../stickers';
 import Avatar from './Avatar';
 
 const RECALL_WINDOW_MS = 5 * 60 * 1000;
@@ -23,6 +24,23 @@ function highlightedText(text: string) {
     part.startsWith('@')
       ? <mark className="message-mention" key={`${part}-${index}`}>{part}</mark>
       : part,
+  );
+}
+
+function renderParts(parts: RichPart[]) {
+  return parts.map((part, index) =>
+    part.kind === 'sticker'
+      ? (
+        <img
+          className="msg-sticker"
+          key={`sticker-${index}`}
+          src={part.url}
+          alt={part.label || '表情'}
+          loading="lazy"
+          decoding="async"
+        />
+      )
+      : <span key={`text-${index}`}>{highlightedText(part.text)}</span>,
   );
 }
 
@@ -50,6 +68,10 @@ export default function MessageItem({
   const canRecall = !message.recalledAt
     && message.sender.userId === currentUserId
     && now <= recallDeadline;
+  const parts = message.recalledAt ? [] : splitStickers(message.content.text);
+  const stickerOnly = parts.length > 0
+    && parts.every(part => part.kind === 'sticker')
+    && !message.replyToMessageId;
 
   useEffect(() => {
     if (!canRecall) return;
@@ -178,7 +200,7 @@ export default function MessageItem({
           </div>
         )}
         <div
-          className={`msg-bubble${message.recalledAt ? ' recalled' : ''}${canRecall ? ' can-recall' : ''}`}
+          className={`msg-bubble${message.recalledAt ? ' recalled' : ''}${canRecall ? ' can-recall' : ''}${stickerOnly ? ' sticker-only' : ''}`}
           onPointerDown={startLongPress}
           onPointerMove={trackLongPress}
           onPointerUp={finishLongPress}
@@ -207,12 +229,16 @@ export default function MessageItem({
                 {replyTo?.sender.displayNameSnapshot ?? '较早消息'}
               </span>
               <span className="reply-quote-text">
-                {replyTo?.recalledAt ? '消息已撤回' : replyTo?.content.text ?? '原消息尚未加载'}
+                {replyTo?.recalledAt
+                  ? '消息已撤回'
+                  : replyTo
+                    ? stickerPreview(replyTo.content.text)
+                    : '原消息尚未加载'}
               </span>
             </button>
           )}
           <div className="msg-text">
-            {message.recalledAt ? '消息已撤回' : highlightedText(message.content.text)}
+            {message.recalledAt ? '消息已撤回' : renderParts(parts)}
           </div>
         </div>
         {showActions && canRecall && (

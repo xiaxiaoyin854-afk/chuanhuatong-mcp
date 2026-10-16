@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { sendMessage } from '../api/messages';
 import type { Message } from '../types';
+import { stickerMarkdown, type Sticker } from '../stickers';
+import StickerPanel from './StickerPanel';
 
 interface Props {
   roomId: string;
@@ -11,20 +13,31 @@ export default function SendBar({ roomId, onSent }: Props) {
   const [text, setText] = useState('');
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showStickers, setShowStickers] = useState(false);
 
-  const submit = async () => {
-    if (sending || text.trim().length === 0) return;
+  const deliver = async (value: string): Promise<boolean> => {
+    if (sending || value.trim().length === 0) return false;
     setSending(true);
     setError(null);
     try {
-      const message = await sendMessage(roomId, text);
-      setText('');
+      const message = await sendMessage(roomId, value);
       onSent(message);
+      return true;
     } catch (error) {
       setError(error instanceof Error ? error.message : '消息发送失败');
+      return false;
     } finally {
       setSending(false);
     }
+  };
+
+  const submit = async () => {
+    const value = text;
+    if (await deliver(value)) setText('');
+  };
+
+  const sendSticker = async (sticker: Sticker) => {
+    await deliver(stickerMarkdown(sticker));
   };
 
   return (
@@ -35,7 +48,19 @@ export default function SendBar({ roomId, onSent }: Props) {
         void submit();
       }}
     >
+      {showStickers && (
+        <StickerPanel disabled={sending} onPick={sticker => void sendSticker(sticker)} />
+      )}
       <div className="send-compose">
+        <button
+          type="button"
+          className={`sticker-toggle${showStickers ? ' active' : ''}`}
+          aria-label={showStickers ? '收起表情包' : '打开表情包'}
+          aria-expanded={showStickers}
+          onClick={() => setShowStickers(open => !open)}
+        >
+          😊
+        </button>
         <textarea
           aria-label="消息"
           value={text}

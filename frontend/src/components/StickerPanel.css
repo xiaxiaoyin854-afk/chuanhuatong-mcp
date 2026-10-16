@@ -1,0 +1,103 @@
+.sticker-toggle {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.sticker-toggle.active {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.sticker-panel {
+  margin-bottom: 8px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.sticker-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  overflow-x: auto;
+}
+
+.sticker-tab {
+  border: none;
+  border-radius: 999px;
+  padding: 4px 12px;
+  background: transparent;
+  color: inherit;
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.sticker-tab.active {
+  background: #f4d7e0;
+  font-weight: 600;
+}
+
+.sticker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 6px;
+  padding: 10px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.sticker-cell {
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 12px;
+  padding: 4px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.sticker-cell:hover,
+.sticker-cell:focus-visible {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.sticker-cell img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.msg-sticker {
+  display: block;
+  max-width: 160px;
+  max-height: 160px;
+  width: auto;
+  height: auto;
+  margin: 2px 0;
+  border-radius: 10px;
+}
+
+.msg-bubble.sticker-only {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .sticker-panel {
+    background: rgba(40, 40, 44, 0.95);
+  }
+
+  .sticker-tab.active {
+    background: rgba(244, 215, 224, 0.25);
+  }
+}
